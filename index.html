@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <head>
-	<meta charset='UTF-8'>
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	
-	<title>Dynamic Dropdown</title>
+		<title>Dynamic Dropdown</title>
 	
-	<link rel='stylesheet' href='css/style.css'>
+		<!-- <link rel='stylesheet' href='css/style.css'>  -->
 	
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-
-	<script>
+		 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+		<script>
 			
 		$(document).ready(function() {
 
@@ -20,9 +21,20 @@
 			    var sever = $("#server").val();
 			    var cntxt = 'backup';
                 
-				$.ajax("ajax/ajax_helper.php", function(data) {
-				       
- 				       	
+				$.ajax({
+					type:'post',
+				 	url:"ajax/ajax_helper.php",
+				 	data:{"sever":sever,"action":cntxt} ,  
+				 	contentType: "application/x-www-form-urlencoded;charset=ISO-8859-15",
+                    beforeSend: function ( xhr ) {
+      
+                    },                    
+      			 	success:function(data) {
+      			 		var db_name = $.parseJSON(data);
+      			 		console.log(db_name);	
+      			 	}
+
+ 				       	});
 					});
 			});
 		});
