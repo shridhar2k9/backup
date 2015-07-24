@@ -2,7 +2,7 @@
 
 //fetching database names in localhost server
 $msg = $_REQUEST['action'];
-//$id = $_REQUEST["ids"];
+
 if($msg == "backup")
 {
 	$server=$_POST["server"];
@@ -30,53 +30,59 @@ if($msg == "backup")
    }
 	echo json_encode($result);
 }
+
 //Code to take the dump of selected database
-	elseif($msg == "backup_button")
+
+elseif($msg == "backup_button")
 	{
-	define("BACKUP_PATH", "C:\\xampp\htdocs\backup\dbbackup\\");
-	$db_name=$_POST["db_name"];
-	$HOST="localhost";
-	$DBUSER="root";
-	$DBPASSWD="root";
-	$DATABASE=$db_name;
-	$date_string   = date("Y-m-d");
-	$cmd = "mysqldump --routines -h {$HOST} -u {$DBUSER} -p{$DBPASSWD} {$DATABASE} > " . BACKUP_PATH . "{$date_string}_{$DATABASE}.sql";
-	exec($cmd);
-	echo json_encode($cmd);
+		define("BACKUP_PATH", "C:\\xampp\htdocs\backup\dbbackup\\");
+		$db_name=$_POST["db_name"];
+		$HOST="localhost";
+		$DBUSER="root";
+		$DBPASSWD="root";
+		$DATABASE=$db_name;
+		$date_string   = date("Y-m-d");
+		$cmd = "mysqldump --routines -h {$HOST} -u {$DBUSER} -p{$DBPASSWD} {$DATABASE} > " . BACKUP_PATH . "{$date_string}_{$DATABASE}.sql";
+		exec($cmd);
+		echo json_encode($cmd);
 }
 
 //displaying files which are took dump
 
-	elseif($msg=="show")
+elseif($msg=="show")
 	{
 	
 		$dir = "C:\\xampp\htdocs\backup\dbbackup\\"; // Directory where files are store
-	
-					
-						if ($dir_list = opendir($dir))
+		if ($dir_list = opendir($dir))
+				{
+				while(($filename = readdir($dir_list)) != false)
+					{
+						if($filename=="." || $filename=="..")
 						{
-						
-						while(($filename = readdir($dir_list)) != false)
-						{
-							if($filename=="." || $filename=="..")
-							{
-								continue;
-							}
-							//$id=$row['id'];
-						echo "<div>";
-						echo "<input type='checkbox'name='check'>";
-						echo $filename; 
-						echo "</div>";
-						
-
-						}										
-						}  
+							continue;
+						}
+					echo "<div class='padding'>";
+					echo "<input  type='checkbox' name='check' id='check_".$filename."' value='".$filename."'>";
+					echo " ".$filename; 
+					echo "</div>";
+					}										
+				}  
        
-				      	
+	}
 
-}
-// if($id==$row['id']);
-//            {
-//              rmdir($dir_list);
-//            } 
+//Removing dump files
+
+if($msg=="delete")
+	{
+		$filenamearr=array();
+		$filenamearr=$_REQUEST['id'];
+		$dir = "C:\\xampp\htdocs\backup\dbbackup\\";
+		foreach ($filenamearr as $val) 
+		{
+			$file_name=$dir.$val;
+			unlink($file_name);
+		}
+
+	}
+
 ?>
