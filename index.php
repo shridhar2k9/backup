@@ -6,7 +6,7 @@
 	
 		<title>Dynamic Dropdown</title>
 	
-		<!-- <link rel='stylesheet' href='css/style.css'>  -->
+		<link rel='stylesheet' href='css/style.css'> 
 	
 		 <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> -->
 		<script>
@@ -67,32 +67,66 @@
       					
                     			},
                     success:function(data) {
+                    	alert("Database Backup successfully");
 								
                    				 }
                    				});
 					}
 				});
-		});	
+$("#drop").click(function() {
+	var ids = [];
+	a=0;
+	$('input[name="check"]:checked').each(function(){
+		ids.push(this.value);
+	});
+	// if(ids=="on")
+	// {
+	// 	var file_path = "C:\\xampp\htdocs\backup\dbbackup\\";
+ //        file_path.remove();
+	// }
+
+
+	$.ajax({
+             type:"post",
+             url:"ajax_helper.php",
+             data:"id="+ids[a]+"&action=show",
+             success:function(data)
+             {
+               $('#show').html(data);
+             }
+            });
+          });
+
+});
+
+
+// 		});	
+// });
 
 	</script>
 </head>
 <body class="padding_top">
-       <div class="col-md-12">
+       <div class="col-md-12 ">
          <div class="col-md-4 "></div>
-            <div class="col-md-4 border" style="background-color:#33CCCC"><div class="text-center h3 "> BACKUP DATABASE </div>
-                <p>Select Server</p>
+            <div class="col-md-4 border" style="background-color:#66CCFF"id="border"><div class="text-center h3 "> BACKUP DATABASE </div>
+                <p class="padding">Select Server</p>
                     <select id="server" class="form-control">
 					<option  value='0'>Select Server</option>
 					<option value="127.0.0.1">loacalhost</option>
 					<option value='188......'>dev server</option>
 					</select>
 				
-					<p>Select Database To Backup</p>
+					<p  class="padding">Select Database To Backup</p>
 					<select id="database"class="form-control"></select>
-					<input type="submit" value="BACKUP" id="backup" name="backup" class="btn btn-primary " />
-					<input type="submit" value="DROP" id="drop" name="drop" class="btn btn-danger " />          
+					<div id="show"name="show"clas="show">
+		
+						</div>
+					<input type="submit" value="BACKUP" id="backup" name="backup" class="btn btn-primary border " />
+					<input type="submit" value="DROP" id="drop" name="drop" class="btn btn-danger pull-right border" />      
 			</div>
-      <div class="col-md-4 "></div>
+      <div class="col-md-4 ">
+      
+      </div>
         </div>
    </body>
 	
